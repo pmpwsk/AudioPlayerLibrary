@@ -16,5 +16,12 @@ public static partial class AudioPlayer
     public static double Volume
     {
         get => Bass.GlobalStreamVolume / (double)10000;
+        set
+        {
+            if (value < 0 || value > 1)
+                throw new ArgumentOutOfRangeException(nameof(value), "The volume has to be between 0.0 and 1.0!");
+
+            Bass.GlobalStreamVolume = (int)Math.Round(value * 10000, 0, MidpointRounding.AwayFromZero);
+        }
     }
 }
