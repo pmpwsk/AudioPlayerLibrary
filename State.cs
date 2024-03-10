@@ -9,4 +9,6 @@ public static partial class AudioPlayer
         Paused,
         Playing
     }
+    
+    private static int Stream = 0;
 }
