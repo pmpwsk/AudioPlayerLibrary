@@ -9,4 +9,12 @@ public static partial class AudioPlayer
     /// Default: false
     /// </summary>
     public static bool KeepOpen { get; set; } = false;
+
+    /// <summary>
+    /// The volume for the playback (between 0 and 1).
+    /// </summary>
+    public static double Volume
+    {
+        get => Bass.GlobalStreamVolume / (double)10000;
+    }
 }
