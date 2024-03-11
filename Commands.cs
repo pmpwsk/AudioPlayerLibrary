@@ -42,4 +42,32 @@ public static partial class AudioPlayer
     /// </summary>
     public static void Stop()
         => Stop(true);
+
+    private static void Stop(bool allowClose)
+    {
+        try
+        {
+            switch (State)
+            {
+                case States.Uninitialized:
+                case States.Stopped:
+                    return;
+            }
+
+            if (!Bass.ChannelRemoveSync(Stream, EndSync))
+                throw new Exception("Failed to remove the 'end' sync from the stream: " + DetailedError());
+            if (!Bass.StreamFree(Stream))
+                throw DetailedException();
+
+            State = States.Stopped;
+            Stream = 0;
+
+            if (allowClose && !KeepOpen)
+                Close();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Failed to stop playback: " + ex.Message);
+        }
+    }
 }
