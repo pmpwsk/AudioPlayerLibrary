@@ -91,4 +91,25 @@ public static partial class AudioPlayer
             throw new Exception("Failed to resume playback: " + ex.Message);
         }
     }
+
+    /// <summary>
+    /// Pauses the playback so it can be resumed later.
+    /// </summary>
+    public static void Pause()
+    {
+        try
+        {
+            if (State != States.Playing)
+                throw new Exception($"Expected state 'Playing' but found '{State}'!");
+
+            if (!Bass.Pause())
+                throw DetailedException();
+
+            State = States.Paused;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Failed to pause playback: " + ex.Message);
+        }
+    }
 }
