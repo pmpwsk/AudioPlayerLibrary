@@ -35,4 +35,11 @@ public static partial class AudioPlayer
             throw new Exception("Failed to start playback: " + ex.Message);
         }
     }
+
+    /// <summary>
+    /// Stops the playback.<br/>
+    /// If KeepOpen is false, the audio engine will be closed afterwards.
+    /// </summary>
+    public static void Stop()
+        => Stop(true);
 }
