@@ -20,6 +20,14 @@ public static partial class AudioPlayer
     public static States State { get; private set; } = States.Uninitialized;
 
     /// <summary>
+    /// The elapsed time.
+    /// </summary>
+    public static TimeSpan Position
+    {
+        get => State == States.Playing || State == States.Paused ? TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Stream, Bass.ChannelGetPosition(Stream))) : TimeSpan.Zero;
+    }
+
+    /// <summary>
     /// The ratio of position to length (between 0 and 1).
     /// </summary>
     public static double PositionRatio
