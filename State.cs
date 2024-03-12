@@ -28,6 +28,12 @@ public static partial class AudioPlayer
     }
 
     /// <summary>
+    /// The total length of the track.
+    /// </summary>
+    public static TimeSpan Length
+        => State == States.Playing || State == States.Paused ? TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Stream, Bass.ChannelGetLength(Stream))) : TimeSpan.Zero;
+
+    /// <summary>
     /// The ratio of position to length (between 0 and 1).
     /// </summary>
     public static double PositionRatio
