@@ -67,5 +67,30 @@ public static partial class AudioPlayer
     public static double PositionRatio
     {
         get => State == States.Playing || State == States.Paused ? Math.Round((double)Bass.ChannelGetPosition(Stream) / Bass.ChannelGetLength(Stream), 1, MidpointRounding.AwayFromZero) : 0;
+        set
+        {
+            try
+            {
+                if (State != States.Playing && State != States.Paused)
+                    throw new Exception("Nothing is playing right now!");
+                if (value < 0 || value > 1)
+                    throw new Exception("The given position is outside of the possible range (0 to 1)!");
+
+                long length = Bass.ChannelGetLength(Stream);
+                long pos = (long)Math.Round(value * length, MidpointRounding.AwayFromZero);
+
+                if (pos == length)
+                {
+                    Stop();
+                    TrackOver?.Invoke();
+                }
+                else if (!Bass.ChannelSetPosition(Stream, pos))
+                    throw DetailedException();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to set the position: " + ex.Message);
+            }
+        }
     }
 }
