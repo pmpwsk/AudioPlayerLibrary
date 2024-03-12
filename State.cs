@@ -1,3 +1,5 @@
+using ManagedBass;
+
 namespace uwap.AudioPlayerLibrary;
 
 public static partial class AudioPlayer
