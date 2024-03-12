@@ -27,6 +27,32 @@ public static partial class AudioPlayer
     public static TimeSpan Position
     {
         get => State == States.Playing || State == States.Paused ? TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Stream, Bass.ChannelGetPosition(Stream))) : TimeSpan.Zero;
+        set
+        {
+            try
+            {
+                if (State != States.Playing && State != States.Paused)
+                    throw new Exception("Nothing is playing right now!");
+
+                long length = Bass.ChannelGetLength(Stream);
+                long pos = Bass.ChannelSeconds2Bytes(Stream, value.TotalSeconds);
+
+                if (pos < 0)
+                    pos = 0;
+
+                if (pos >= length)
+                {
+                    Stop();
+                    TrackOver?.Invoke();
+                }
+                else if (!Bass.ChannelSetPosition(Stream, pos))
+                    throw DetailedException();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to set the position: " + ex.Message);
+            }
+        }
     }
 
     /// <summary>
