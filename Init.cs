@@ -21,7 +21,7 @@ public static partial class AudioPlayer
         }
         catch (Exception ex)
         {
-            throw new Exception("Failed to open the audio engine: " + (ex.Message.Contains("Unable to load shared library 'bass'") ? "The BASS library could not be loaded, most likely because bass.dll (Windows) or libbass.so (Linux) is not in this program's directory. Refer to https://uwap.org/no-bass in order to resolve this issue." : ex.Message));
+            throw new Exception("Failed to open the audio engine: " + (ex.Message.Contains("Unable to load shared library 'bass'") || ex.Message.Contains("Unable to load DLL 'bass'") ? "The BASS library could not be loaded, most likely because bass.dll (Windows) or libbass.so (Linux) is not in this program's directory. Refer to https://uwap.org/no-bass in order to resolve this issue." : ex.Message));
         }
     }
 
